@@ -1,0 +1,21 @@
+# Never commit the virtual environment — it's huge and machine-specific
+venv/
+
+# Python cache files — auto-generated, not source code
+__pycache__/
+*.pyc
+*.pyo
+
+# Trained model weights — often large binary files
+# (remove this line if you want to version your models)
+models/*.pth
+
+# Dataset files — usually too large for Git
+data/
+
+# Mac junk
+.DS_Store
+
+# Editor config
+.vscode/
+.idea/

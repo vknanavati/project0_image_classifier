@@ -1,0 +1,15 @@
+# Deep learning framework — this is what builds and trains our neural network
+torch==2.2.1
+torchvision==0.17.1
+
+# Flask — turns our trained model into an API you can send requests to
+flask==3.0.2
+
+# Pillow — image processing library, handles opening/resizing photos
+Pillow==10.2.0
+
+# NumPy — fast math on arrays of numbers (images are just arrays of pixels)
+numpy==1.26.4
+
+# Matplotlib — for visualizing images and training results
+matplotlib==3.8.3
