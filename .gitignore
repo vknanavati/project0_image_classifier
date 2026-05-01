@@ -1,21 +1,30 @@
-# Never commit the virtual environment — it's huge and machine-specific
-venv/
-
-# Python cache files — auto-generated, not source code
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
+venv/
+.env
+*.egg-info/
+dist/
+build/
 
-# Trained model weights — often large binary files
-# (remove this line if you want to version your models)
-models/*.pth
+# macOS
+.DS_Store
+.AppleDouble
 
-# Dataset files — usually too large for Git
+# Jupyter
+.ipynb_checkpoints/
+
+# Data / models (usually too large for git)
+*.h5
+*.pkl
+*.pt
+*.pth
 data/
 
-# Mac junk
-.DS_Store
-
-# Editor config
+# IDE
 .vscode/
 .idea/
+
+# Logs
+*.log
