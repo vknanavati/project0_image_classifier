@@ -18,3 +18,19 @@
 So before `train.py` ran, our model was just an empty structure with random weights — essentially guessing randomly. After `train.py` finished, the weights have been tuned through 600,000+ adjustments and the model knows how to recognize images with 75.8% accuracy.
 
 The file `models/cifar_model.pth` is the result — that's the trained brain we'll load for predictions.
+
+## What evaluate.py Did
+
+1. **Loaded the trained model** — read the weights from `models/cifar_model.pth` that train.py saved
+
+2. **Ran the naive baseline** — tested what accuracy you get by always guessing "airplane" regardless of the image. Result: 10.0%
+
+3. **Evaluated the neural network** — ran all 10,000 test images through the model and measured how many it got right. Result: 75.8%
+
+4. **Broke down accuracy per class** — showed how well the model does on each individual category, revealing which classes it struggles with (cat: 49.8%) and which it excels at (automobile: 87.9%)
+
+5. **Generated a visualization** — created `predictions.png` showing 18 test images with their predicted and actual labels. Green = correct, Red = wrong.
+
+6. **Printed a summary** — compared baseline vs model side by side showing the +65.8% improvement
+
+The key purpose of evaluate.py is honesty — it proves our model is genuinely learning and not just getting lucky, by comparing it against the dumbest possible strategy.
