@@ -9,7 +9,8 @@ from flask import Flask, request, jsonify
 
 sys.path.append(os.path.dirname(__file__))
 import config
-from predict import load_model, predict
+from predict import load_model
+from predict import predict as predict_image
 
 # Create the Flask app
 app = Flask(__name__)
@@ -68,7 +69,7 @@ def predict_endpoint():
             tmp_path = tmp.name
 
         # Run prediction
-        result = predict(tmp_path, model, device)
+        result = predict_image(tmp_path, model, device)
 
         # Clean up the temporary file
         os.unlink(tmp_path)

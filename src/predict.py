@@ -1,7 +1,3 @@
-# predict.py — loads the trained model and makes predictions on new images
-# This file's only job is inference — taking a single image and returning a prediction
-# It's what the Flask API will call when someone uploads a photo
-
 import torch
 import torch.nn.functional as F
 from torchvision import transforms
@@ -15,11 +11,6 @@ from model import get_model
 
 
 def load_model():
-    # Load the trained model from disk
-    # We do this once when the API starts up, not on every request
-    # Analogy: a doctor studying medicine once, then applying that knowledge
-    # to each patient — not re-studying for every appointment
-
     model, device = get_model()
 
     if not os.path.exists(config.MODEL_PATH):
@@ -28,6 +19,41 @@ def load_model():
             "Please run train.py first."
         )
 
-    # Load the saved weights into the model structure
     model.load_state_dict(torch.load(config.MODEL_PATH, map_location=device))
-    model
+    model.eval()
+    print(f"Model loaded from {config.MODEL_PATH}")
+    return model, device
+
+
+def predict(image_path, model, device):
+    transform = transforms.Compose([
+        transforms.Resize((config.IMAGE_SIZE, config.IMAGE_SIZE)),
+        transforms.Lambda(lambda img: img.convert('RGB')),
+        transforms.ToTensor(),
+        transforms.Normalize(
+            mean=(0.4914, 0.4822, 0.4465),
+            std=(0.2023, 0.1994, 0.2010)
+        ),
+    ])
+
+    image = Image.open(image_path)
+    image_tensor = transform(image).unsqueeze(0)
+    image_tensor = image_tensor.to(device)
+
+    with torch.no_grad():
+        outputs = model(image_tensor)
+        probabilities = F.softmax(outputs, dim=1)
+        confidence, predicted_idx = probabilities.max(1)
+        predicted_class = config.CLASSES[predicted_idx.item()]
+        confidence_score = confidence.item()
+
+        all_probabilities = {
+            config.CLASSES[i]: round(probabilities[0][i].item(), 4)
+            for i in range(config.NUM_CLASSES)
+        }
+
+    return {
+        'predicted_class': predicted_class,
+        'confidence': round(confidence_score, 4),
+        'all_probabilities': all_probabilities
+    }
